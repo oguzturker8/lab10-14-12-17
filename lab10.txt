@@ -1,0 +1,132 @@
+
+package threading;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.Scanner;
+
+/**
+ *
+ * @author alev
+ */
+public class threading implements Runnable{
+
+    /**
+     * @param args the command line arguments
+     */
+    
+      private int start1;
+      private int stop1;
+      private int id1;
+      
+      private int value;
+    
+    threading(int a, int b, int c){
+        start1 = a;
+        stop1 = b;
+        id1 = c;
+    }
+    
+    
+    
+    
+     void myThreading() throws FileNotFoundException{
+        FileInputStream fs= new FileInputStream("a.txt");
+        BufferedReader br = new BufferedReader(new InputStreamReader(fs));
+        
+        for(int i = 0; i < start1; ++i){
+            try {
+                br.readLine();
+            } catch (IOException ex) {
+                Logger.getLogger(threading.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        
+            
+            
+            for(int i = start1; i <= stop1; ++i)
+            try {
+                String lineIWant = br.readLine();
+                System.out.println(lineIWant);
+                
+            } catch (IOException ex) {
+                Logger.getLogger(threading.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
+            
+            
+        }
+    
+        public int getValue(){
+            System.out.println("Thread " + id1 + " bitti sonuc" + value);
+            value = stop1 - start1 + 1;
+            return value;
+        }
+    
+    public void run () {
+        try {
+            myThreading();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(threading.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
+    static int numLines() throws FileNotFoundException, IOException{
+        LineNumberReader reader  = new LineNumberReader(new FileReader("a.txt"));
+        int cnt = 0;
+        String lineRead = "";
+        while ((lineRead = reader.readLine()) != null) {}
+
+        cnt = reader.getLineNumber(); 
+        reader.close();
+        
+        return cnt;
+    
+    }
+    
+    public static void main(String[] args) throws IOException {
+        // TODO code application logic here
+        
+        int numL = numLines();
+
+        
+        Scanner sc = new Scanner(System.in);
+        int numTh;
+        
+        System.out.println("Thread sayisini girin:");
+        numTh = sc.nextInt();
+        
+        int step = (int)Math.round((double)numL / (double)numTh);
+        
+        threading arrTh[] = new threading[numTh];
+
+int sum = 0;
+        
+        for(int i = 0; i < numTh; i++){
+            if(i == numTh - 1)
+                arrTh[i] = new threading(i*step, numL-1, i);
+            else
+                arrTh[i] = new threading(i*step, (i+1) * step - 1, i);
+            arrTh[i].run();
+            sum = arrTh[i].getValue() + sum;
+        }
+        
+        System.out.println("sum :" + sum);
+
+    
+    }
+    
+    
+    
+    
+}
