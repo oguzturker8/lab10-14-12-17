@@ -26,8 +26,9 @@ public class threading implements Runnable{
       private int start1;
       private int stop1;
       private int id1;
-      
-      private int value;
+      private String araan;
+      private int value;
+      private static int sayac=0;
     
     threading(int a, int b, int c){
         start1 = a;
@@ -57,7 +58,9 @@ public class threading implements Runnable{
             try {
                 String lineIWant = br.readLine();
                 System.out.println(lineIWant);
-                
+                if(aranan==lineIWant){
+                sayac++;
+                }
             } catch (IOException ex) {
                 Logger.getLogger(threading.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -122,6 +125,7 @@ int sum = 0;
         }
         
         System.out.println("sum :" + sum);
+        System.out.printl("aranan :" +sayac);
 
     
     }
